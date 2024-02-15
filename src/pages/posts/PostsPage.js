@@ -38,45 +38,44 @@ function PostsPage({ message, filter = "" }) {
 
     setHasLoaded(false);
     const timer = setTimeout(() => {
-        fetchPosts();
-    }, 1000)
+      fetchPosts();
+    }, 1000);
+
     return () => {
-        clearTimeout(timer);
-    }
+      clearTimeout(timer);
+    };
   }, [filter, query, pathname]);
 
   return (
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
         <PopularProfiles mobile />
-        <i className={`fas-fa-search ${styles.SearchIcon}`} />
-        <Form 
-            className={styles.SearchBar} 
-            onSubmit={(event) => event.preventDefault()}
+        <i className={`fas fa-search ${styles.SearchIcon}`} />
+        <Form
+          className={styles.SearchBar}
+          onSubmit={(event) => event.preventDefault()}
         >
-            <Form.Control 
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                type="text" 
-                className="mr-sm-2"
-                placeholder="Search posts" 
-            />
+          <Form.Control
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            type="text"
+            className="mr-sm-2"
+            placeholder="Search posts"
+          />
         </Form>
 
         {hasLoaded ? (
           <>
             {posts.results.length ? (
-              <InfiniteScroll 
-                children={
-                    posts.results.map((post) => (
-                      <Post key={post.id} {...post} setPosts={setPosts} />
-                    ))
-                }
+              <InfiniteScroll
+                children={posts.results.map((post) => (
+                  <Post key={post.id} {...post} setPosts={setPosts} />
+                ))}
                 dataLength={posts.results.length}
                 loader={<Asset spinner />}
                 hasMore={!!posts.next}
                 next={() => fetchMoreData(posts, setPosts)}
-              />      
+              />
             ) : (
               <Container className={appStyles.Content}>
                 <Asset src={NoResults} message={message} />
